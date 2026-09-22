@@ -145,16 +145,6 @@ h, net = pipeline.net_series(("data7", "500")) # blank-corrected curve, N = 500
 
 ---
 
-## Data and calibration availability
-
-* **Data** — released in this repository under CC BY 4.0.
-* **Calibration** — the 24-min decoupled sweep, the fitted coefficients, the
-  fitting script and the steady-state points are available **from the
-  corresponding author on reasonable request**; `calibration/README.md` states
-  exactly what the package contains and how to ask for it.
-
----
-
 ## Licence and citation
 
 Code: MIT (`LICENSE`). Data: CC BY 4.0. See `CITATION.cff`.
