@@ -1,0 +1,6 @@
+﻿tier,sigma_ppm,basis,slope_ppm_per_termite,lod_termites,loq_termites
+Blank short-term noise,6.43,"SD of adjacent 10-min differences / sqrt(2), largest of the three blanks (6.43 / 5.45 / 5.10 ppm)",6.75,3.1,9.5
+Blank detrended residual,17.0,"SD of the 19-point rolling-median-detrended blank residual, largest batch (17.00 / 7.03 / 11.34 ppm)",6.75,8.3,25.2
+Blank-to-blank 24 h change,19.94,"SD of the three batch blanks' dCO2 (+34.3, -5.5, +11.5 ppm)",6.75,9.8,29.6
+Pooled calibration residual,329.52,"Residual SD of net dCO2 ~ N, n = 8",6.75,161.2,488.4
+Batch-2-only calibration residual,264.03,"Residual SD of the within-batch fit, n = 5",7.47,116.6,353.3
