@@ -1,24 +1,17 @@
-# Termite trap gas sensing
+# A Networked Multi-Gas Sensing System for In-Trap Monitor-ing of Termite-Associated CO₂ and CH₄: Design and Evaluation
 
 A networked sensor node measures CO₂ (NDIR), CH₄ (MOx) and temperature/humidity
 inside sealed termite chambers holding 105–500 workers. This repository holds the
 measurements, the analysis code that regenerates every table and figure in the
 paper, and the documentation needed to reuse the data.
 
+
+The CSV (`termite_gas_measurements.csv`) is the **only** data file released. It is plain text so that GitHub can
+diff it and so that Excel, R, MATLAB or Python can open it without a reader.
+
 ---
 
 
-# Data
-
-**This folder contains exactly two files:**
-
-| Path | What it is |
-|---|---|
-| `termite_gas_measurements.csv` | **the measurements** — all 15,626 samples of the 0–24 h analysis window, one row per sample |
-| `README.md` | this document (a Chinese edition of the same content is in `../docs/数据说明.md`) |
-
-The CSV is the **only** data file released. It is plain text so that GitHub can
-diff it and so that Excel, R, MATLAB or Python can open it without a reader.
 
 ---
 
@@ -187,12 +180,6 @@ the ranges the manuscript quotes.
 
 
 
-
-
-
-
-
-
 The data file is one flat table — a single header row and one row per sample —
 with the chamber carried in a column rather than in block separators:
 
@@ -213,11 +200,10 @@ list and a standalone loader.
 
 
 
-
-
 ## 3. Licence
 
 Released under **CC BY 4.0** — 
 Please cite the paper if you use these data.
 
+Citation：If this project is useful for your research, please cite this work after the paper is formally published.
 Corresponding author: whj@zafu.edu.cn
