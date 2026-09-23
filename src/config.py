@@ -1,25 +1,9 @@
-# -*- coding: utf-8 -*-
-"""Shared paths and constants.
-
-Repository layout
------------------
-    data/termite_gas_measurements.csv   the measurements: one header row and
-                                        one row per sample, with the chamber
-                                        named in a column rather than in block
-                                        separators
-    data/README.md                      data documentation
-    calibration/README.md               how to obtain the calibration files and raw data
-    src/                                analysis code
-    results/                            generated tables and key numbers
-    figures/                            generated figures
-"""
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 DATA = ROOT / "data"
 RESULTS = ROOT / "results"
 FIGURES = ROOT / "figures"
-CALIBRATION = ROOT / "calibration"
 
 MEASUREMENTS_CSV = DATA / "termite_gas_measurements.csv"
 
@@ -53,10 +37,10 @@ YEAR_ASSUMED = 2025
 # --- batch identity -------------------------------------------------------
 # The three batches were acquired on different dates with different colonies;
 # they must never be time-aligned across batches (see data/README.md).
-BATCHES = ["data6", "data7", "data9"]
-BATCH_NAME = {"data6": "Batch 1", "data7": "Batch 2", "data9": "Batch 3"}
+BATCHES = ["data1", "data2", "data3"]
+BATCH_NAME = {"data1": "Batch 1", "data2": "Batch 2", "data3": "Batch 3"}
 SRC_OF_BATCH = {v: k for k, v in BATCH_NAME.items()}
-BATCH_DATES = {"data6": "24-26 Aug", "data7": "28-30 Aug", "data9": "4-6 Sep"}
+BATCH_DATES = {"data1": "24-26 Aug", "data2": "28-30 Aug", "data3": "4-6 Sep"}
 
 
 def chamber_label(src: str, condition: str) -> str:
