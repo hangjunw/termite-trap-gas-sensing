@@ -119,14 +119,6 @@ the ranges the manuscript quotes.
 
 ## 2. Caveats (please read before reusing the data)
 
-Sampling interval.​ Nominal resolution is 1 minute, but roughly 1.3–1.5 %​ of the minute marks are missing in every chamber due to polling dropouts. Row count therefore does not equal elapsed minutes. Resample or interpolate against h before differentiating.
-The file ends at 24 h by design.​ Every chamber stops at h = 24. There is no data beyond this window to trim. The actual acquisition ran longer (48.4–51.8 h per chamber), but after 24 h the termites may be stressed or dead. Those records fall outside the paper's scope and are not included here. The 24 h window is the complete dataset for this study.
-Values are raw and not despiked.​ All extremes fall within reasonable ranges (CO₂ 342–4,684 ppm, CH₄ 0–310 ppm, T 20.0–32.1 °C, RH 48.9–94.6 %RH).
-Blanks must be paired by batch.​ Net accumulation is calculated as ΔCO₂(chamber) − ΔCO₂(blank from the same batch). The three blanks are not interchangeable and should never be merged or averaged. Their 24 h drifts are +34.3, −5.5, and +11.5 ppm — they differ in sign.
-Batch effects exist.​ Batches 1 and 3 read 11.9–21.4 % below the Batch 2 model prediction. Treat batch as a random or fixed effect, or report within-batch and between-batch results separately.
-The CH₄ channel is a MOx reading, not a flux.​ It depends strongly on temperature (partial r = 0.55 within chambers). The blanks are both dry and CH₄-free, so humidity and termite presence are fully confounded. Only the ranking​ of chambers is supported by these data.
-
-
 1. **Sampling interval.** Nominal resolution is 1 minute, but roughly 1.3–1.5 %​ of the minute marks are missing in every chamber due to polling dropouts. Row count therefore does not equal elapsed minutes. Resample or interpolate against h before differentiating.
 2. **The file ends at 24 h by design.** Every chamber stops at 'h = 24'. There is no data beyond this window to trim. The actual acquisition ran longer (48.4–51.8 h per chamber), but after 24 h the termites may be stressed or dead. Those records fall outside the paper's scope and are not included here. The 24 h window is the complete dataset for this study.
 3. **Values are raw and not despiked.** All extremes fall within reasonable ranges (CO₂ 342–4,684 ppm, CH₄ 0–310 ppm, T 20.0–32.1 °C, RH 48.9–94.6 %RH).
