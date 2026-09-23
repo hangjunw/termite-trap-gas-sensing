@@ -34,18 +34,12 @@ no data-preparation step.
 │   ├── termite_gas_measurements.csv   the measurements
 │   │                                  15,626 rows / 11 chambers / 6 columns
 │   └── README.md                      data documentation (English)
-├── calibration/
-│   └── README.md                calibration campaign; files available on request
 ├── src/
 │   ├── config.py                paths, constants, colour palette
 │   ├── pipeline.py              CSV parsing + despiking / resampling / endpoints
 │   ├── tables.py                Tables 4-9 + all in-text statistics
 │   ├── figures.py               Figures 5-11
 │   └── run_all.py               one-command driver
-├── docs/
-│   ├── REPRODUCIBILITY.md       verification against the paper, known last-digit differences
-│   ├── PUBLISHING.md            how to put this package on GitHub
-│   └── 数据说明.md               中文数据说明
 ├── results/                     generated: tables, model_comparison.csv, key_numbers.json, console_report.txt
 └── figures/                     generated: Figures 5-11 (300 dpi PNG)
 ```
