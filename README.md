@@ -96,8 +96,6 @@ raw minute values
 | Blank-to-blank 24 h drift | +34.3 / −5.5 / +11.5 ppm (reported separately) |
 | LOO grading error at 1 h / 24 h | 70.3 % / 16.0 % |
 
-Full verification table: `docs/REPRODUCIBILITY.md`.
-
 ---
 
 ## Three rules the code enforces
