@@ -12,9 +12,6 @@ diff it and so that Excel, R, MATLAB or Python can open it without a reader.
 ---
 
 
-
----
-
 ## 1. `termite_gas_measurements.csv`
 
 **Shape**: one header row + **15,626 data rows × 6 columns**.
@@ -108,8 +105,6 @@ df["h"] = (df.groupby("Chamber (N)", sort=False)["t"]
                                    % 86400).cumsum() / 3600))
 ```
 
-`src/pipeline.py::load_long()` returns the same table plus the despiked and
-resampled series the paper works with.
 
 ### The 11 chambers
 
