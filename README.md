@@ -1,10 +1,5 @@
 # Termite trap gas sensing — code and data
 
-Reproduction package for
-
-> **A Networked Multi-Gas Sensing System for In-Trap Monitoring of Termite-Associated CO₂ and CH₄: Design and Evaluation**
-> Hangjun Wang, Hao Huang, Shan Wu, et al.
-
 A networked sensor node measures CO₂ (NDIR), CH₄ (MOx) and temperature/humidity
 inside sealed termite chambers holding 105–500 workers. This repository holds the
 measurements, the analysis code that regenerates every table and figure in the
