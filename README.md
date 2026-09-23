@@ -122,6 +122,7 @@ h, net = pipeline.net_series(("data7", "500")) # blank-corrected curve, N = 500
 
 ## Licence and citation
 
+```bash
 * numpy>=1.24
 
 * pandas>=2.0
@@ -129,7 +130,7 @@ h, net = pipeline.net_series(("data7", "500")) # blank-corrected curve, N = 500
 * scipy>=1.10
 
 * matplotlib>=3.7
-
+```
 ---
 
 ## Licence and citation
