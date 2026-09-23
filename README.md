@@ -98,19 +98,6 @@ raw minute values
 
 ---
 
-## Three rules the code enforces
-
-1. **The 0–24 h window only.** The acquisition ran for 48–52 h, but the released
-   file and every reported statistic stop at 24 h. Beyond that the termites may
-   be stressed or dead.
-2. **The three blanks are never merged.** Net accumulation always subtracts the
-   blank of the *same batch*. The three blanks drift in different directions
-   (+34.3, −5.5, +11.5 ppm), so averaging them would be meaningless.
-3. **Elapsed hours only, never calendar dates.** The source timestamps carry no
-   year; any year shown for the released `Timestamp` column is a parsing
-   artefact, not data.
-
----
 
 ## Reproducing a single item
 
