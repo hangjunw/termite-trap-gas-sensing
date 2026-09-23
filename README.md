@@ -1,10 +1,6 @@
 # A Networked Multi-Gas Sensing System for In-Trap Monitor-ing of Termite-Associated CO₂ and CH₄: Design and Evaluation
 
-A networked sensor node measures CO₂ (NDIR), CH₄ (MOx) and temperature/humidity
-inside sealed termite chambers holding 105–500 workers. This repository holds the
-measurements, the analysis code that regenerates every table and figure in the
-paper, and the documentation needed to reuse the data.
-
+We built a networked system that records CO₂ (NDIR), a metal-oxide CH₄ channel, temperature and humidity inside sealed traps, polled over RS-485/Modbus by one host.
 
 The CSV (`termite_gas_measurements.csv`) is the **only** data file released. It is plain text so that GitHub can
 diff it and so that Excel, R, MATLAB or Python can open it without a reader.
@@ -18,11 +14,7 @@ diff it and so that Excel, R, MATLAB or Python can open it without a reader.
 File size ≈ 0.72 MB, encoded **UTF-8 with BOM** (so Excel on a Chinese Windows
 locale shows the headers correctly), line endings LF.
 
-The file contains the manuscript's **0–24 h analysis window** and nothing else:
-every chamber's first 24 h of minute-level logging, which is the entire dataset
-the paper analyses. There is no post-window tail to explain away, and the
-extremes quoted in the paper (CO₂ 342–4,684 ppm, CH₄ 0–310 ppm) are exactly the
-extremes of this file.
+This file contains the complete 0–24 h dataset used in the paper: minute-level traces from all chambers. No data exists outside this window. The CO₂ range (342–4,684 ppm) and CH₄ range (0–310 ppm) reported in the paper are derived from this file alone.
 
 ```
 CO2 (ppm),Temperature (°C),Relative humidity (%RH),CH4 (ppm),Timestamp,Chamber (N)
@@ -50,10 +42,7 @@ Table 5.
 
 ### The `Chamber (N)` column
 
-The data were acquired as one workbook per batch with one worksheet per chamber,
-and each batch ran its chambers **in parallel**. A CSV cannot hold worksheets,
-so the chamber is carried by a column instead of by block separators. Its values
-reproduce Table 5 of the manuscript **verbatim**:
+The Chamber (N) column follows the format Batch number · value. Each value represents a single chamber measurement within that batch. Blanks are recorded as Batch number · Blank (0).
 
 | Value | Batch | `N` | blank? |
 |---|---|---|---|
@@ -62,7 +51,6 @@ reproduce Table 5 of the manuscript **verbatim**:
 | `Batch 2 · 105` … `Batch 2 · 500` | 2 | 105 … 500 | no |
 | `Batch 3 · 343`, `Batch 3 · 461` | 3 | 343, 461 | no |
 
-- The separator is a **middle dot, U+00B7, with one space either side**.
 - `N = 0` (written `Blank (0)`, as in Table 4's *Condition (N)*) marks a blank
   control — there were three of them, one per batch.
 - The dose axis *x* is the termite number **N** (105 … 500).
@@ -74,8 +62,6 @@ reproduce Table 5 of the manuscript **verbatim**:
   (1,420 × 8 + 1,422 × 3 = **15,626**). Nothing beyond 24 h is included, so the
   row count and the paper's window are the same object.
 - One row per sample, in **acquisition order**, grouped by chamber.
-- Chambers appear in the order of the original workbooks: within each batch the
-  blank control comes first.
 - All chambers of a batch share one elapsed-time axis; **the three batches do not
   overlap in time** and their time axes must never be aligned.
 - Elapsed hours are not a column: `h = (t − t₀)/3600`, where `t₀` is the first
@@ -83,7 +69,7 @@ reproduce Table 5 of the manuscript **verbatim**:
 
 ### Loading it
 
-Plain `pandas` reads it directly — there is nothing to skip:
+pandas.read_csv() loads the file without any special arguments. No rows need to be skipped.
 
 ```python
 import pandas as pd
@@ -133,65 +119,22 @@ the ranges the manuscript quotes.
 
 ## 2. Caveats (please read before reusing the data)
 
-1. **Sampling interval.** Nominally 1 minute, but about **1.3–1.5 %** of the
-   minute points are missing in every chamber (polling dropouts), so the row
-   count is not the number of minutes. Resample or interpolate against `h`
-   before differentiating.
-2. **The file stops at the analysis window by design.** The record ends at
-   `h = 24` for every chamber, so there is no post-window tail to discard. The
-   acquisition itself ran longer (48.4–51.8 h per chamber), but beyond 24 h the
-   termites may be stressed or dead; those records lie outside the scope of this
-   paper and are not released. The window is the whole dataset.
-3. **Values are raw and not despiked.** The extremes are all inside a sane range
-   (CO₂ 342–4,684 ppm, CH₄ 0–310 ppm, T 20.0–32.1 °C, RH 48.9–94.6 %RH). For
-   strict despiking use `pipeline.despike` (7-point rolling MAD,
-   k = 6); the paper's preprocessing is implemented in `src/pipeline.py` so you
-   can change it and re-run.
-4. **`Timestamp` has no year — and Excel will add one when you open the file.**
-   The timestamps carry month, day, hour and minute only. Excel's CSV importer
-   parses `08-24 12:46` as a date and re-displays it as e.g. `2026/8/24 12:46`;
-   **that year is not in the file**. Spreadsheet programs make this conversion on
-   import and there is no way to prevent it in a plain CSV. Use `h` for all
-   durations and never rely on absolute dates. (In the original acquisition
-   workbooks the cell was stored as text and displayed without a year, which is
-   why the released CSV and the source files look different when both are opened
-   in Excel.)
-5. **Blank controls must be paired by batch.** Net accumulation is
-   `ΔCO₂(chamber) − ΔCO₂(blank of the same batch)`. The three blanks are **not
-   interchangeable and must never be merged or averaged** — their 24 h drifts
-   are +34.3, −5.5 and +11.5 ppm, i.e. they differ in sign.
-6. **Batch effects are real.** Batches 1 and 3 read 11.9–21.4 % below the Batch 2
-   model prediction. Treat the batch as a random or fixed effect, or report
-   within-batch and between-batch results separately.
-7. **The CH₄ channel is a MOx reading, not a flux.** It is strongly
-   temperature-dependent (partial r = 0.55 within chambers) and the blanks are
-   both dry and CH₄-free, so humidity and termite presence are fully
-   confounded. Only the **ordering** of chambers is supported by these data.
-8. **One calibration covers all three batches.** The measurements are already
-   calibration-corrected; the calibration itself is available on request — see
-   `../calibration/README.md`.
+Sampling interval.​ Nominal resolution is 1 minute, but roughly 1.3–1.5 %​ of the minute marks are missing in every chamber due to polling dropouts. Row count therefore does not equal elapsed minutes. Resample or interpolate against h before differentiating.
+The file ends at 24 h by design.​ Every chamber stops at h = 24. There is no data beyond this window to trim. The actual acquisition ran longer (48.4–51.8 h per chamber), but after 24 h the termites may be stressed or dead. Those records fall outside the paper's scope and are not included here. The 24 h window is the complete dataset for this study.
+Values are raw and not despiked.​ All extremes fall within reasonable ranges (CO₂ 342–4,684 ppm, CH₄ 0–310 ppm, T 20.0–32.1 °C, RH 48.9–94.6 %RH).
+Blanks must be paired by batch.​ Net accumulation is calculated as ΔCO₂(chamber) − ΔCO₂(blank from the same batch). The three blanks are not interchangeable and should never be merged or averaged. Their 24 h drifts are +34.3, −5.5, and +11.5 ppm — they differ in sign.
+Batch effects exist.​ Batches 1 and 3 read 11.9–21.4 % below the Batch 2 model prediction. Treat batch as a random or fixed effect, or report within-batch and between-batch results separately.
+The CH₄ channel is a MOx reading, not a flux.​ It depends strongly on temperature (partial r = 0.55 within chambers). The blanks are both dry and CH₄-free, so humidity and termite presence are fully confounded. Only the ranking​ of chambers is supported by these data.
+
+
+1. **Sampling interval.** Nominal resolution is 1 minute, but roughly 1.3–1.5 %​ of the minute marks are missing in every chamber due to polling dropouts. Row count therefore does not equal elapsed minutes. Resample or interpolate against h before differentiating.
+2. **The file ends at 24 h by design.** Every chamber stops at 'h = 24'. There is no data beyond this window to trim. The actual acquisition ran longer (48.4–51.8 h per chamber), but after 24 h the termites may be stressed or dead. Those records fall outside the paper's scope and are not included here. The 24 h window is the complete dataset for this study.
+3. **Values are raw and not despiked.** All extremes fall within reasonable ranges (CO₂ 342–4,684 ppm, CH₄ 0–310 ppm, T 20.0–32.1 °C, RH 48.9–94.6 %RH).
+4. **Blanks must be paired by batch.** Net accumulation is calculated as ΔCO₂(chamber) − ΔCO₂(blank from the same batch). The three blanks are not interchangeable and should never be merged or averaged. Their 24 h drifts are +34.3, −5.5, and +11.5 ppm — they differ in sign.
+5. **Batch effects exist.** Batches 1 and 3 read 11.9–21.4 % below the Batch 2 model prediction. Treat batch as a random or fixed effect, or report within-batch and between-batch results separately.
+6. **The CH₄ channel is a MOx reading, not a flux.** It depends strongly on temperature (partial r = 0.55 within chambers). The blanks are both dry and CH₄-free, so humidity and termite presence are fully confounded. Only the ranking​ of chambers is supported by these data.
 
 ---
-
-
-
-The data file is one flat table — a single header row and one row per sample —
-with the chamber carried in a column rather than in block separators:
-
-```
-CO2 (ppm),Temperature (°C),Relative humidity (%RH),CH4 (ppm),Timestamp,Chamber (N)
-531,21.54,61.56,0,08-24 12:46,Batch 1 · Blank (0)
-965,24.00,75.76,0,08-24 12:46,Batch 1 · 310
-```
-
-Column names are English and follow the manuscript's own wording (`Chamber (N)`
-as in Table 5, whose `Batch 1 · 310` labels are reproduced verbatim).
-`src/pipeline.py::load_long()` splits the label into batch, condition and termite
-number, and builds the elapsed-hours axis. See `data/README.md` for the field
-list and a standalone loader.
-
----
-
 
 
 
